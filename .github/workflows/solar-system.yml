@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - 'feature/*'
+      - 'feature-*'
     
 jobs:
     unit-testing:
@@ -18,7 +18,7 @@ jobs:
         - name: Setup NodeJS Version
           uses: actions/setup-node@v3
           with:
-            node-version: 20
+            node-version: 22.12.0
     
         - name: Install Dependencies
           run: npm install
