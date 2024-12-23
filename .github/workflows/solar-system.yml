@@ -48,8 +48,9 @@ jobs:
     name: Code Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+            
 
       - name: Setup NodeJS Version - 22
         uses: actions/setup-node@v4
