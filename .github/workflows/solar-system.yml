@@ -8,9 +8,7 @@ on:
       - 'feature-*'
 
 env:
-  MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
-  MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
-  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+  MONGO_URI: 'mongodb+srv://${{ secrets.MONGO_USERNAME }}:${{ secrets.MONGO_PASSWORD }}@supercluster.d83jj.mongodb.net/superData'
 
 jobs:
   unit-testing:
@@ -33,7 +31,7 @@ jobs:
           node-version: ${{ matrix.nodejs_version }}
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Unit Testing
         run: npm test
@@ -48,9 +46,8 @@ jobs:
     name: Code Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.1.0
-            
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Setup NodeJS Version - 22
         uses: actions/setup-node@v4
@@ -58,13 +55,14 @@ jobs:
           node-version: 22
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Check Code Coverage
         continue-on-error: true
         run: npm run coverage
 
       - name: Archive Test Results
+        if: success() || always()
         uses: actions/upload-artifact@v3
         with:
           name: Code-Coverage-Result
