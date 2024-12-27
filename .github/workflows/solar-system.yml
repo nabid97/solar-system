@@ -16,10 +16,10 @@ jobs:
     strategy:
       matrix:
         nodejs_version: [20, 22]
-        operating_system: [ubuntu-latest, macos-latest]
+        operating_system: [ubuntu-latest, windows-latest]
         exclude:
           - nodejs_version: 20
-            operating_system: macos-latest
+            operating_system: windows-latest
     runs-on: ${{ matrix.operating_system }}
     steps:
       - name: Checkout Repository
@@ -73,7 +73,7 @@ jobs:
         run: npm run coverage
 
       - name: Archive Test Results
-        if: success() || always()
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: Code-Coverage-Result
