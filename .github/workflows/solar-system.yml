@@ -12,7 +12,6 @@ env:
 
 jobs:
   unit-testing:
-    if: always()
     name: Unit Testing
     strategy:
       matrix:
@@ -86,6 +85,7 @@ jobs:
 
   docker:
     needs: [unit-testing, code-coverage]
+    if: always()
     name: Containerization
     runs-on: ubuntu-latest
     steps:
