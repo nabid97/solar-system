@@ -15,11 +15,12 @@ jobs:
     name: Unit Testing
     strategy:
       matrix:
-        nodejs_version: [20, 22]
+        nodejs_version: [22]
+        #nodejs_version: [20, 22]  
         operating_system: [ubuntu-latest, windows-latest]
         exclude:
-          - nodejs_version: 20
-            operating_system: windows-latest
+          #- nodejs_version: 20
+           # operating_system: windows-latest
     runs-on: ${{ matrix.operating_system }}
     steps:
       - name: Checkout Repository
@@ -127,4 +128,26 @@ jobs:
           tags: |
                ${{ vars.DOCKERHUB_USERNAME}}/solar-system:${{github.sha}}
                ghcr.io/${{github.repository_owner}}/solar-system:${{github.sha}}
-#edited
+  dev-deploy:
+     needs: docker
+     runs-on: ubuntu-latest
+     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v4.0.0
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v4.0.
+        with:
+          method:
+          kubeconfig: ${{secrets.KUBECONFIG}}
+
+            
+      - name: Fetch Kubernetes Cluster Details
+        run: |
+          kubectl version --short
+          echo ---------------------------
+          kubectl get nodes
+
+
+            
